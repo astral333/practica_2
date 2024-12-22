@@ -50,24 +50,30 @@ class CategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Category    $category)
     {
-        //
+        return inertia('Categories/Edit', [
+            'category' => $category
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(CategoryRequest $request, Category $category)
     {
-        //
+        $category->update($request->validated());
+        return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Category    $category)
     {
-        //
+      if($category->delete()){
+        return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');
+      }
+      return back()->with('error', 'Failed to delete category.');
     }
 }

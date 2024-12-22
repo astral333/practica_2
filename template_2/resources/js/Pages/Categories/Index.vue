@@ -5,17 +5,25 @@ export default {
 </script>
 <script setup>
 import AppLayout from '@/Layouts/AppLayout.vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, useForm } from '@inertiajs/vue3';
 defineProps({
     categories: {
         type: Object,
         required: true,
     },
 })
+const form = useForm({});
 const deleteCategory = (id) => {
     console.log(id);
     if (confirm('Are you sure you want to delete this category?')) {
-        Inertia.delete(route('categories.destroy', id));
+        form.delete(route('categories.destroy', id), {
+            onSuccess: () => {
+                form.reset();
+            },
+            onError: (errors) => {
+                form.errors = errors;
+            }
+        });
     }
 }
 </script>
