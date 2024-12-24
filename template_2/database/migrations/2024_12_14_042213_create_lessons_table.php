@@ -21,6 +21,7 @@ class CreateLessonsTable extends Migration
             $table->string('content_uri',255)->nullable();
             $table->string('pdf_uri',255)->nullable();
             $table->unsignedBigInteger('level_id');
+            $table->boolean('is_free')->default(false);
             $table->foreign('level_id')->references('id')->on('levels')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });

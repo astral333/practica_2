@@ -10,12 +10,13 @@ use Inertia\Inertia;
 
 class CategoryController extends Controller
 {
+    const NUMBER_OF_CATEGORIES = 25;
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $number = 25;
+        $number = self::NUMBER_OF_CATEGORIES;
         $categories = Category::paginate($number);
       //  return view('categories.index', compact('categories'));
       return inertia('Categories/Index', [
@@ -63,8 +64,10 @@ class CategoryController extends Controller
      */
     public function update(CategoryRequest $request, Category $category)
     {
-        $category->update($request->validated());
+       if($category->update($request->validated())){
         return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
+       }
+       return back()->with('error', 'Failed to update category.');
     }
 
     /**
